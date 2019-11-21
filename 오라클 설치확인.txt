@@ -1,0 +1,129 @@
+https://www.oracle.com/technetwork/java/api-141528.html 여기가면 api정보, 정규화확인가능
+	http://www.mybatis.org/mybatis-3/ko/index.html 마이바티스.
+
+
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+		String id = "scott";
+		String pw = "tiger";
+
+
+
+오라클ID dlwnsgkr32@naver.com
+비번 1Q2w3e4r!! 대소문자ㅡㅡ
+
+오라클은 system oracle이고
+마리아는 root maria이다. 포트는3306 호스트는127.0.0.1로 잡혀있었음
+
+
+사용자 이름 orcl 비밀번호 ttest123 
+호스트 이름 oracle-study.c1wm8opbqdfy.ap-northeast-2.rds.amazonaws.com 
+포트 1521 SID STUDY
+
+cmd에서 sqlplus
+user엔 system
+pass엔 비번치면 연결된다고나옴.
+
+컴퓨터 - 관리 - 서비스 - OracleService, OracleORCL(or XE) 수동으로바꾸면 수동실행.
+
+Sqldeveloper는 설치과정없이 exe파일 실행시키면됨.
+C:// Program Files // java // jdk // jre // bin // java.exe 설정하고
+실행하면됨
+
+SqlDeveloper에서 작업을하려면
++새연결
+SID는 xe나 orcl일것임
+
+
+=============
+12C설치하고
+CREATE USER 계정이름 IDENTIFIED BY 암호; //를쓰려고하면 아댄다.
+CREATE USER C##계정이름 IDENTIFIED BY 암호;//이렇게 C##을 붙여주거나
+
+system계정으로 로그인한후
+ALTER SESSION SET "_ORACLE_SCRIPT"=TURE; //이렇게 그 전버전처럼 쓸수있게 설정해야한다.
+
+
+==============
+https://mi2mic.tistory.com/162
+SID주소보는법
+
+====
+scott에 users권한이 없다고 지랄하면
+sqlplus에가서
+http://ojc.asia/bbs/board.php?bo_table=Cyber&wr_id=128
+이거따라하면된다.
+====
+JDBC
+오라클과 자바가 통신할 수 있게 해주는 API
+
+JDBC라이브러리를 써야함
+
+C:\app\LJH\virtual\product\12.2.0\dbhome_2\jdbc\lib 여기나
+C:\app\LJH\virtual\product\12.2.0\dbhome_2\sqldeveloper\jdbc\lib 여기서
+
+ojdbc파일을 찾아서
+C:\Program Files\Java\jre1.8.0_181\lib\ext
+여기서 복사해주면됨.
+
+학원에선 프로젝트마다 WEB-INF\lib폴더에 넣어줬는데 여긴다르네?
+======
+
+OracleDriver로딩 [Driver loading] // Class.forName(driver);
+
+Java와 Oracle연결[Connection    ] // con = DriverManager.getConnection(url, id, pw);
+
+query 전송 객체  [Statement     ] // stmt = con.createStatement();
+
+query 작성        [query   	] // String sql = "SELECT * FROM book";
+
+query 전송    	  [run		] // res = stmt.executeQuer(sql);
+
+이렇게해준다.
+forname로 드라이버 로딩. (메모리에올리기위해)
+con으로 연결을 맺어주고. id, pw로 인증까지
+stmt객체로 연결을 가져오고
+sql로 쿼리를 작성한 다음에
+stmt로 sql쿼리를 쓸수있다.
+
+
+===
+stmt로쓰면 오타날확률이높다. 왜냐면 소스랑 쿼리를 같이쓰기때문임.
+하지만 pstmt로하면 sql = ? 처리를해주고
+?를 밑으로 따로빼서 쿼리를 따로쓸수있음. 더 편리하다.
+
+pstmt는 쿼리먼저 String sql = "UPDATE book SET book_loc = ? " 해주고
+pstmt = con.prepareStatement(sql);
+pstmt.setString(1, "000-0004444");
+pstmt.setString(2, "book7"); 이렇게.
+
+run은
+int result = pstmt.executeUpdate(); 이렇게.
+
+
+
+
+lPoint
+burningup	1q2w3e4r!!
+
+
+STS.ini설정
+https://blog.naver.com/maconmacon0809/221595693635
+
+
+spring.datasource.driverClassName=org.mariadb.jdbc.Driver
+spring.datasource.url=jdbc:mariadb://localhost:3306/testdb
+spring.datasource.username=root
+spring.datasource.password=maria
+
+# log level config
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate=INFO
+
+# Show or not log for each sql query 
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+server.port:8080
+
